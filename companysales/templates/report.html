@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button class="btn btn-info text-light">Получить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            {% for i in list_customer %}
+                <div class="col-md-5 mt-3">
+                    <div class="card border-primary mb-3">
+                        <div class="card-body">
+                            <div class="card">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">{{ i.customer.last_name }} {{ i.customer.first_name }}</li>
+                                    <li class="list-group-item">Номер телефона: {{ i.customer.phone }}</li>
+                                    <li class="list-group-item">
+                                        Email: {% firstof i.customer.email "Отсутствует" %}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

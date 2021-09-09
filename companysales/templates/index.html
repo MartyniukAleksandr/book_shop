@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container mt-3">
+        <div class="row">
+            {% for product in product_list %}
+                <div class="col-md-6">
+                    <div class="card mb-3">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img src="{{ product.image.url }}" class="img-fluid rounded-start"
+                                     alt="{{ product.image }}"
+                                     title="{{ product.name }}">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ product.name }}</h5>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">{{ product.description|truncatechars:35 }}</li>
+                                        <li class="list-group-item">Количество: {{ product.stock }}(шт)</li>
+                                        <li class="list-group-item">Цена: {{ product.price }} &#8372</li>
+                                    </ul>
+                                    <div class="d-flex justify-content-between">
+                                        <form action="{% url 'update_item' product.id %}" method="get" class="mt-4"
+                                              style="">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="id" value="{{ product.id }}">
+                                            <button class="btn btn-primary">Редактировать</button>
+                                        </form>
+                                        <form action="{% url 'product_list' %}" method="post" class="mt-4">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="id" value="{{ product.id }}">
+                                            <button class="btn btn-danger">Удалить</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

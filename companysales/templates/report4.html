@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button class="btn btn-info text-light">Получить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-4">
+        <div class="row">
+            {% for product in list_date %}
+                <div class="col-md-6">
+                    <div class="card md-6 mt-3">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img src="{{ product.image.url }}" class="img-fluid rounded-start"
+                                     alt="{{ product.image }}"
+                                     title="{{ product.name }}">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ product.name }}</h5>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">{{ product.description|truncatechars:35 }}</li>
+                                        <li class="list-group-item">Количество: {{ product.stock }}(шт)</li>
+                                        <li class="list-group-item">Цена: {{ product.price }} &#8372</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

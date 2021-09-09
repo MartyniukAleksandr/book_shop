@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container mt-3">
+        <div class="row">
+            {% for customer in customer_list %}
+                <div class="col-md-6">
+                    <div class="card mt-3">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ customer.first_name }} {{ customer.last_name }}</h5>
+                            <ul class="list-group">
+                                <li class="list-group-item">Email: {% firstof customer.email "Отсутствует" %}</li>
+                                <li class="list-group-item">Номер телефона: {{ customer.phone }}</li>
+                            </ul>
+                            <div class="d-flex justify-content-between">
+                                <form action="{% url 'update_item_customer' customer.id %}" method="get" class="mt-4"
+                                      style="">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="id" value="{{ customer.id }}">
+                                    <button class="btn btn-primary">Редактировать</button>
+                                </form>
+                                <form action="{% url 'customer_list' %}" method="post" class="mt-4">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="id" value="{{ customer.id }}">
+                                    <button class="btn btn-danger">Удалить</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
