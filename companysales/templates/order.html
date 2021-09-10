@@ -10,7 +10,7 @@
                             <ul class="list-group">
                                 <li class="list-group-item">Покупатель: {{ order.customer }}</li>
                                 <li class="list-group-item">Продавец: {{ order.seller }}</li>
-                                <li class="list-group-item">Продукт: {{ order.product }}</li>
+                                <li class="list-group-item">Продукт: {{ order.product|truncatechars:55 }}</li>
                                 <li class="list-group-item">Дата: {{ order.date }}</li>
                                 <li class="list-group-item">Сумма: {{ order.total }} &#8372</li>
                             </ul>

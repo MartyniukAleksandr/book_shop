@@ -20,15 +20,17 @@
                         <div class="card-body">
                             <div class="card">
                                 <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">{{ i.customer.last_name }} {{ i.customer.first_name }}</li>
-                                    <li class="list-group-item">Номер телефона: {{ i.customer.phone }}</li>
+                                    <li class="list-group-item">{{ i.last_name }} {{ i.first_name }}</li>
+                                    <li class="list-group-item">Номер телефона: {{ i.phone }}</li>
                                     <li class="list-group-item">
-                                        Email: {% firstof i.customer.email "Отсутствует" %}</li>
+                                        Email: {% firstof i.email "Отсутствует" %}</li>
                                 </ul>
                             </div>
                         </div>
                     </div>
                 </div>
+            {% empty %}
+                <span>Нет результатов для этого значения</span>
             {% endfor %}
         </div>
     </div>

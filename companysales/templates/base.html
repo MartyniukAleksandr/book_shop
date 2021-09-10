@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-info bg-gradient">
     <div class="container">
         <a class="navbar-brand" href="{% url 'product_list' %}">Book Shop</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -41,11 +41,9 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="{% url 'report4' %}">Продажы по дате</a>
                 </li>
-
-                <!--                <li class="nav-item">-->
-                <!--                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>-->
-                <!--                </li>-->
-
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'report5' %}">Сумма продаж по дате</a>
+                </li>
             </ul>
         </div>
     </div>
