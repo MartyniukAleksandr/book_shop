@@ -2,13 +2,18 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import *
 from .models import Product, Customer, Seller, Order
 from .utils import no_duplicate
+from django.contrib import messages
 
 
 def index(request):
-    if request.method == "POST":
-        current_id = request.POST.get('id', None)
-        product = get_object_or_404(pk=current_id, klass=Product)
-        product.delete()
+    try:
+        if request.method == "POST":
+            current_id = request.POST.get('id', None)
+            product = get_object_or_404(pk=current_id, klass=Product)
+            product.delete()
+            messages.success(request, "Удаление товара(продукта) прошло успешно")
+    except:
+        messages.error(request, "Ой! Что-то пошло не так. Товар(продукт) не удален")
     product_list = Product.objects.all()
     return render(
         request, 'index.html',
@@ -21,9 +26,13 @@ def index(request):
 
 def customer(request):
     if request.method == "POST":
-        current_id = request.POST.get('id', None)
-        product = get_object_or_404(pk=current_id, klass=Customer)
-        product.delete()
+        try:
+            current_id = request.POST.get('id', None)
+            product = get_object_or_404(pk=current_id, klass=Customer)
+            product.delete()
+            messages.success(request, "Удаление покупателя прошло успешно")
+        except:
+            messages.error(request, "Ой! Что-то пошло не так. Покупатель не удален")
     customer_list = Customer.objects.all()
     return render(
         request, 'customer.html',
@@ -36,9 +45,13 @@ def customer(request):
 
 def seller(request):
     if request.method == "POST":
-        current_id = request.POST.get('id', None)
-        sel = get_object_or_404(pk=current_id, klass=Seller)
-        sel.delete()
+        try:
+            current_id = request.POST.get('id', None)
+            sel = get_object_or_404(pk=current_id, klass=Seller)
+            sel.delete()
+            messages.success(request, "Удаление продавца прошло успешно")
+        except:
+            messages.error(request, "Ой! Что-то пошло не так. Продавец не удален")
     seller_list = Seller.objects.all()
     return render(
         request, 'seller.html',
@@ -51,9 +64,13 @@ def seller(request):
 
 def order(request):
     if request.method == "POST":
-        current_id = request.POST.get('id', None)
-        orders = get_object_or_404(pk=current_id, klass=Order)
-        orders.delete()
+        try:
+            current_id = request.POST.get('id', None)
+            orders = get_object_or_404(pk=current_id, klass=Order)
+            orders.delete()
+            messages.success(request, "Удаление заказа прошло успешно")
+        except:
+            messages.error(request, "Ой! Что-то пошло не так. Заказ не удален")
     order_list = Order.objects.all()
     return render(
         request, 'order.html',
@@ -69,15 +86,17 @@ def update_item(request, product_id):
         product = get_object_or_404(pk=int(product_id), klass=Product)
         form = ProductUpdateForm(instance=product)
     else:
-
-        product = get_object_or_404(pk=int(product_id), klass=Product)
-        product.name = request.POST.get('name')
-        product.description = request.POST.get('description')
-        product.image = request.FILES.get('image')
-        product.stock = request.POST.get('stock')
-        product.price = request.POST.get('price')
-        product.save()
-
+        try:
+            product = get_object_or_404(pk=int(product_id), klass=Product)
+            product.name = request.POST.get('name')
+            product.description = request.POST.get('description')
+            product.image = request.FILES.get('image')
+            product.stock = request.POST.get('stock')
+            product.price = request.POST.get('price')
+            product.save()
+            messages.success(request, "Данные товара(продукта) успешно обновлены!")
+        except:
+            messages.error(request, "Ой! Что-то пошло не так. Товар(продукт) не обновлен")
         return redirect('product_list')
     return render(
         request, 'update_item.html',
@@ -93,12 +112,16 @@ def update_item_customer(request, customer_id):
         custom = get_object_or_404(pk=int(customer_id), klass=Customer)
         form = CustomerUpdateForm(instance=custom)
     else:
-        body = {**request.POST}
-        del body['csrfmiddlewaretoken']
-        del body['id']
-        for key in body:
-            body[key] = body[key][0]
-        Customer.objects.update_or_create(pk=int(request.POST.get('id')), defaults={**body})
+        try:
+            body = {**request.POST}
+            del body['csrfmiddlewaretoken']
+            del body['id']
+            for key in body:
+                body[key] = body[key][0]
+            Customer.objects.update_or_create(pk=int(request.POST.get('id')), defaults={**body})
+            messages.success(request, "Данные покупателя успешно обновлены!")
+        except:
+            messages.error(request, "Ой! Что-то пошло не так. Данные покупателя не обновлены")
         return redirect('customer_list')
     return render(
         request, 'update_item_customer.html',
@@ -114,12 +137,16 @@ def update_item_seller(request, seller_id):
         sellers = get_object_or_404(pk=int(seller_id), klass=Seller)
         form = SellerUpdateForm(instance=sellers)
     else:
-        body = {**request.POST}
-        del body['csrfmiddlewaretoken']
-        del body['id']
-        for key in body:
-            body[key] = body[key][0]
-        Seller.objects.update_or_create(pk=int(request.POST.get('id')), defaults={**body})
+        try:
+            body = {**request.POST}
+            del body['csrfmiddlewaretoken']
+            del body['id']
+            for key in body:
+                body[key] = body[key][0]
+            Seller.objects.update_or_create(pk=int(request.POST.get('id')), defaults={**body})
+            messages.success(request, "Данные продавца успешно обновлены")
+        except:
+            messages.error(request, "Ой! Что-то пошло не так. Данные продавца не обновлены")
         return redirect('seller_list')
     return render(
         request, 'update_item_seller.html',
@@ -135,20 +162,24 @@ def update_item_order(request, order_id):
         orders = get_object_or_404(pk=int(order_id), klass=Order)
         form = OrderUpdateForm(instance=orders)
     else:
-        body = {**request.POST}
-        customer_new = Customer.objects.get(pk=body['customer'][0])
-        seller_new = Seller.objects.get(pk=body['seller'][0])
-        product_new = Product.objects.get(pk=body['product'][0])
-        total_new = body['total'][0]
-        Order.objects.update_or_create(
-            pk=int(request.POST.get('id')),
-            defaults={
-                'customer': customer_new,
-                'seller': seller_new,
-                'product': product_new,
-                'total': total_new
-            }
-        )
+        try:
+            body = {**request.POST}
+            customer_new = Customer.objects.get(pk=body['customer'][0])
+            seller_new = Seller.objects.get(pk=body['seller'][0])
+            product_new = Product.objects.get(pk=body['product'][0])
+            total_new = body['total'][0]
+            Order.objects.update_or_create(
+                pk=int(request.POST.get('id')),
+                defaults={
+                    'customer': customer_new,
+                    'seller': seller_new,
+                    'product': product_new,
+                    'total': total_new
+                }
+            )
+            messages.success(request, "Данные заказа успешно обновлены")
+        except:
+            messages.error(request, "Ой! Что-то пошло не так. Данные заказа не обновлены")
         return redirect('order_list')
     return render(
         request, 'update_item_order.html',
@@ -189,6 +220,7 @@ def report4(request):
     list_date = Product.objects.filter(order__date=request.POST.get('date'))
     list_date = no_duplicate(list_date)
     return render(request, 'report4.html', {'form': form, 'list_date': list_date})
+
 
 def report5(request):
     """Отображение общей суммы продаж в заданный день."""
