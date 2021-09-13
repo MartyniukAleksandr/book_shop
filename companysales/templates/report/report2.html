@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'partials/base.html' %}
 
 {% block content %}
     <div class="container mt-4">
@@ -14,7 +14,7 @@
     </div>
     <div class="container">
         <div class="row">
-            {% for i in list_customer %}
+            {% for i in list_seller %}
                 <div class="col-md-5 mt-3">
                     <div class="card border-primary mb-3">
                         <div class="card-body">
@@ -23,7 +23,9 @@
                                     <li class="list-group-item">{{ i.last_name }} {{ i.first_name }}</li>
                                     <li class="list-group-item">Номер телефона: {{ i.phone }}</li>
                                     <li class="list-group-item">
-                                        Email: {% firstof i.email "Отсутствует" %}</li>
+                                        Email: {% firstof i.seller.email "Отсутствует" %}</li>
+                                    <li class="list-group-item">Должность: {{ i.get_position_display }}</li>
+                                    <li class="list-group-item">Дата приема: {{ i.date }}</li>
                                 </ul>
                             </div>
                         </div>

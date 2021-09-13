@@ -1,0 +1,56 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-info bg-gradient">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'product_list' %}">Book Shop</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarNav">
+            <ul class="navbar-nav">
+                {% if request.user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'customer_list' %}">Покупатели</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'seller_list' %}">Продавци</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'order_list' %}">Заказы</a>
+                    </li>
+                    <li class="nav-item">
+                        <!-- Example single danger button -->
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                Отчеты
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'report' %}">Покупатели продавца</a></li>
+                                <li><a class="dropdown-item" href="{% url 'report2' %}">Продажи товаров продавца</a>
+                                </li>
+                                <li><a class="dropdown-item" href="{% url 'report3' %}">Покупатели товаров</a></li>
+                                <li><a class="dropdown-item" href="{% url 'report4' %}">Продажы по дате</a></li>
+                                <li><a class="dropdown-item" href="{% url 'report5' %}">Сумма продаж по дате</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'logout' %}">Выйти</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item"    >
+                        <a class="nav-link active " aria-current="page" href="{% url 'login' %}">Войти</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'register' %}">Регистрация</a>
+                    </li>
+                {% endif %}
+            </ul>
+            {% if request.user.is_authenticated %}
+                <small>Привет, <strong>
+                    <a href="#">{{ request.user.username }}</a>!
+                </strong></small>
+            {% endif %}
+        </div>
+    </div>
+</nav>

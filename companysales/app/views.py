@@ -16,7 +16,7 @@ def index(request):
         messages.error(request, "Ой! Что-то пошло не так. Товар(продукт) не удален")
     product_list = Product.objects.all()
     return render(
-        request, 'index.html',
+        request, 'site_items/index.html',
         {
             'product_list': product_list,
             'title': 'Товары'
@@ -35,7 +35,7 @@ def customer(request):
             messages.error(request, "Ой! Что-то пошло не так. Покупатель не удален")
     customer_list = Customer.objects.all()
     return render(
-        request, 'customer.html',
+        request, 'site_items/customer.html',
         {
             'customer_list': customer_list,
             'title': 'Покупатели'
@@ -54,7 +54,7 @@ def seller(request):
             messages.error(request, "Ой! Что-то пошло не так. Продавец не удален")
     seller_list = Seller.objects.all()
     return render(
-        request, 'seller.html',
+        request, 'site_items/seller.html',
         {
             'seller_list': seller_list,
             'title': 'Продавци'
@@ -73,7 +73,7 @@ def order(request):
             messages.error(request, "Ой! Что-то пошло не так. Заказ не удален")
     order_list = Order.objects.all()
     return render(
-        request, 'order.html',
+        request, 'site_items/order.html',
         {
             'order_list': order_list,
             'title': 'Заказы'
@@ -99,7 +99,7 @@ def update_item(request, product_id):
             messages.error(request, "Ой! Что-то пошло не так. Товар(продукт) не обновлен")
         return redirect('product_list')
     return render(
-        request, 'update_item.html',
+        request, 'update_items/update_item.html',
         {
             'form': form,
             'product_id': product_id,
@@ -124,7 +124,7 @@ def update_item_customer(request, customer_id):
             messages.error(request, "Ой! Что-то пошло не так. Данные покупателя не обновлены")
         return redirect('customer_list')
     return render(
-        request, 'update_item_customer.html',
+        request, 'update_items/update_item_customer.html',
         {
             'form': form,
             'customer_id': customer_id,
@@ -149,7 +149,7 @@ def update_item_seller(request, seller_id):
             messages.error(request, "Ой! Что-то пошло не так. Данные продавца не обновлены")
         return redirect('seller_list')
     return render(
-        request, 'update_item_seller.html',
+        request, 'update_items/update_item_seller.html',
         {
             'form': form,
             'seller_id': seller_id,
@@ -182,7 +182,7 @@ def update_item_order(request, order_id):
             messages.error(request, "Ой! Что-то пошло не так. Данные заказа не обновлены")
         return redirect('order_list')
     return render(
-        request, 'update_item_order.html',
+        request, 'update_items/update_item_order.html',
         {
             'form': form,
             'order_id': order_id,
@@ -195,7 +195,7 @@ def report(request):
     form = ReportForm1()
     list_customer = Customer.objects.filter(order__seller__pk=request.POST.get('seller'))
     list_customer = no_duplicate(list_customer)  # Отсекаем дубликаты
-    return render(request, 'report.html', {'form': form, 'list_customer': list_customer})
+    return render(request, 'report/report.html', {'form': form, 'list_customer': list_customer})
 
 
 def report2(request):
@@ -203,7 +203,7 @@ def report2(request):
     form = ReportForm2()
     list_seller = Seller.objects.filter(order__product__pk=request.POST.get('product'))
     list_seller = no_duplicate(list_seller)
-    return render(request, 'report2.html', {'form': form, 'list_seller': list_seller})
+    return render(request, 'report/report2.html', {'form': form, 'list_seller': list_seller})
 
 
 def report3(request):
@@ -211,7 +211,7 @@ def report3(request):
     form = ReportForm2()
     list_customer = Customer.objects.filter(order__product__pk=request.POST.get('product'))
     list_customer = no_duplicate(list_customer)
-    return render(request, 'report3.html', {'form': form, 'list_customer': list_customer})
+    return render(request, 'report/report3.html', {'form': form, 'list_customer': list_customer})
 
 
 def report4(request):
@@ -219,7 +219,7 @@ def report4(request):
     form = ReportForm3()
     list_date = Product.objects.filter(order__date=request.POST.get('date'))
     list_date = no_duplicate(list_date)
-    return render(request, 'report4.html', {'form': form, 'list_date': list_date})
+    return render(request, 'report/report4.html', {'form': form, 'list_date': list_date})
 
 
 def report5(request):
@@ -230,4 +230,4 @@ def report5(request):
     result_total = []
     for t in list_total:
         result_total.append(t.total)
-    return render(request, 'report5.html', {'form': form, 'total': sum(result_total)})
+    return render(request, 'report/report5.html', {'form': form, 'total': sum(result_total)})

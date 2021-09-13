@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'partials/base.html' %}
 
 {% block content %}
     <div class="container mt-4">
@@ -7,7 +7,7 @@
                 <form method="post">
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <input type="hidden" name="id" value="{{ seller_id }}">
+                    <input type="hidden" name="id" value="{{ customer_id }}">
                     <button class="btn btn-info text-light">Обновить</button>
                 </form>
             </div>
