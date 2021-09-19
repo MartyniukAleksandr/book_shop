@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login as user_login, logout
-from .forms import UserLoginForm, UserRegisterForm
+from .forms import UserLoginForm, UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from .models import Profile
 from django.contrib import messages
 
@@ -22,6 +22,8 @@ def login(request):
 
 
 def register(request):
+    if not request.user.is_authenticated:
+        return redirect('/auth/login')
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
@@ -40,3 +42,33 @@ def register(request):
 def user_logout(request):
     logout(request)
     return redirect('/auth/login')
+
+
+def profile_edit(request):
+    if request.method == 'POST':
+        p_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+        u_form = UserUpdateForm(request.POST, instance=request.user)
+        if p_form.is_valid() and u_form.is_valid():
+            u_form.save()
+            p_form.save()
+            messages.success(request, 'Профиль обновлен успешно!')
+            return redirect('profile')
+    else:
+        if not request.user.is_authenticated:
+            return redirect('/auth/login')
+        p_form = ProfileUpdateForm(instance=request.user)
+        u_form = UserUpdateForm(instance=request.user.profile)
+
+    context = {'p_form': p_form, 'u_form': u_form}
+    return render(request, 'site_items/profile_edit.html', context)
+
+
+def profile(request):
+    list_profile = Profile.objects.all()
+    return render(
+        request, 'site_items/profile.html',
+        {
+            'list_profile': list_profile,
+            'title': 'Профиль'
+        }
+    )

@@ -37,8 +37,8 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{% url 'logout' %}">Выйти</a>
                     </li>
-                    {% else %}
-                    <li class="nav-item"    >
+                {% else %}
+                    <li class="nav-item">
                         <a class="nav-link active " aria-current="page" href="{% url 'login' %}">Войти</a>
                     </li>
                     <li class="nav-item">
@@ -48,7 +48,7 @@
             </ul>
             {% if request.user.is_authenticated %}
                 <small>Привет, <strong>
-                    <a href="#">{{ request.user.username }}</a>!
+                    <a href="{% url 'profile' %}">{{ request.user.username }}</a>!
                 </strong></small>
             {% endif %}
         </div>
