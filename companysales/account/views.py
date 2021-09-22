@@ -22,8 +22,6 @@ def login(request):
 
 
 def register(request):
-    if not request.user.is_authenticated:
-        return redirect('/auth/login')
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
