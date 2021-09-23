@@ -8,6 +8,7 @@ class Customer(models.Model):
     phone = models.CharField(max_length=32, blank=False, verbose_name='Номер телефона')
 
     class Meta:
+        ordering = ['id']
         verbose_name = 'Покупатель'
         verbose_name_plural = 'Покупатели'
 
@@ -35,6 +36,7 @@ class Seller(models.Model):
     )
 
     class Meta:
+        ordering = ['id']
         verbose_name = 'Продавец'
         verbose_name_plural = 'Продавцы'
 
@@ -50,6 +52,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=19, decimal_places=2, default=0, verbose_name='Цена')
 
     class Meta:
+        ordering = ['id']
         verbose_name = 'Продукт'
         verbose_name_plural = 'Продукты'
 
@@ -83,5 +86,6 @@ class Order(models.Model):
     total = models.DecimalField(max_digits=19, decimal_places=2, default=0, verbose_name='Сумма продажи')
 
     class Meta:
+        ordering = ['id']
         verbose_name = 'Заказ'
         verbose_name_plural = 'Заказы'

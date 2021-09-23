@@ -64,7 +64,7 @@ def profile_edit(request):
 def profile(request):
     if not request.user.is_authenticated:
         return redirect('/auth/login')
-    list_profile = Profile.objects.all()
+    list_profile = Profile.objects.filter(user__username=request.user)
     return render(
         request, 'site_items/profile.html',
         {
