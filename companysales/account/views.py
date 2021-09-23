@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.contrib.auth import login as user_login, logout
 from .forms import UserLoginForm, UserRegisterForm, UserUpdateForm, ProfileUpdateForm
@@ -54,8 +55,21 @@ def profile_edit(request):
     else:
         if not request.user.is_authenticated:
             return redirect('/auth/login')
-        p_form = ProfileUpdateForm(instance=request.user)
-        u_form = UserUpdateForm(instance=request.user.profile)
+        """ Получаем ключи модели """
+        profile_fields = [f.name for f in Profile._meta.get_fields()]
+        user_fields = [f.name for f in User._meta.get_fields()]
+        """ Получаем словарь с ключей модели Профиля"""
+        initial_profile = {}
+        for p in profile_fields:
+            initial_profile.update({p: getattr(request.user.profile, p)})
+        """ Получаем словарь с ключей модели Юзера """
+        initial_user = {}
+        for p in user_fields:
+            if hasattr(request.user, p):
+                initial_user.update({p: getattr(request.user, p)})
+        """ Заполняем форму актуальными данными с помощью  initial """
+        p_form = ProfileUpdateForm(instance=request.user, initial=initial_profile)
+        u_form = UserUpdateForm(instance=request.user.profile, initial=initial_user)
 
     context = {'p_form': p_form, 'u_form': u_form}
     return render(request, 'site_items/profile_edit.html', context)
